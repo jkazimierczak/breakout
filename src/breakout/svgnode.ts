@@ -30,15 +30,15 @@ export const COLLISION = {
 
 interface ISVGNodeParams {
     selector?: string;
-    domNode: Element;
+    domNode?: HTMLElement;
 }
 
 export class SVGNode {
-    node: Element;
+    node: HTMLElement;
 
     constructor(obj: ISVGNodeParams) {
         if (obj.selector) {
-            const element = document.querySelector(obj.selector);
+            const element = document.querySelector<HTMLElement>(obj.selector);
             if (!element) {
                 throw new Error(`Selector ${obj.selector} yielded no objects.`);
             }
