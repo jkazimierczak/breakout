@@ -28,28 +28,40 @@ export const COLLISION = {
     LEFT: Symbol("LEFT"),
 };
 
+interface ISVGNodeParams {
+    selector?: string;
+    domNode: Element;
+}
+
 export class SVGNode {
-    constructor(obj) {
+    node: Element;
+
+    constructor(obj: ISVGNodeParams) {
         if (obj.selector) {
-            this.node = document.querySelector(obj.selector);
+            const element = document.querySelector(obj.selector);
+            if (!element) {
+                throw new Error(`Selector ${obj.selector} yielded no objects.`);
+            }
+            this.node = element;
         } else if (obj.domNode) {
             this.node = obj.domNode;
         }
+        throw new Error("Invalid constructor params");
     }
 
-    getStringAttr(attrName) {
+    getStringAttr(attrName: string) {
         return this.node.getAttribute(attrName);
     }
 
-    get(attrName) {
+    get(attrName: string) {
         return Number(this.getStringAttr(attrName));
     }
 
-    set(attrName, value) {
+    set(attrName: string, value: string) {
         return this.node.setAttribute(attrName, value);
     }
 
-    collidesWith(svg) {
+    collidesWith(svg: SVGNode) {
         return (
             this.x + this.width >= svg.x && // left-edge
             this.x <= svg.x + svg.width && // right-edge
@@ -58,7 +70,7 @@ export class SVGNode {
         );
     }
 
-    collidesWithWhichEdge(svg) {
+    collidesWithWhichEdge(svg: SVGNode) {
         if (!this.collidesWith(svg)) {
             return { edge: COLLISION.NONE };
         }
@@ -80,31 +92,31 @@ export class SVGNode {
         return this.get("x");
     }
 
-    set x(value) {
-        this.set("x", value);
+    set x(value: number) {
+        this.set("x", String(value));
     }
 
     get y() {
         return this.get("y");
     }
 
-    set y(value) {
-        this.set("y", value);
+    set y(value: number) {
+        this.set("y", String(value));
     }
 
     get width() {
         return this.get("width");
     }
 
-    set width(value) {
-        this.set("width", value);
+    set width(value: number) {
+        this.set("width", String(value));
     }
 
     get height() {
         return this.get("height");
     }
 
-    set height(value) {
-        this.set("height", value);
+    set height(value: number) {
+        this.set("height", String(value));
     }
 }
