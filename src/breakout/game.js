@@ -1,3 +1,9 @@
+import gsap from "gsap";
+import {EasePack, RoughEase} from "gsap/EasePack";
+import {SVGNode} from "./svgnode.js";
+import throttle from "lodash/throttle";
+import "@fontsource/press-start-2p";
+
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
 
@@ -9,7 +15,7 @@ const BALL_DIR_Y_DOWN = 1;
 const BALL_DIR_X_RIGHT = 1;
 const BALL_DIR_X_LEFT = -1;
 const BALL_INITIAL_X_DIR = BALL_DIR_X_RIGHT;
-const BALL_INITIAL_Y_DIR = BALL_DIR_Y_UP;
+const BALL_INITIAL_Y_DIR = BALL_DIR_Y_DOWN;
 const GAME_STEP = 5;
 
 // Constants (do not change)
@@ -23,6 +29,7 @@ const BLOCK_COLORS = {
     YELLOW: "#ffd25d",
     GREEN: "#86ffa8",
     BLUE: "#87c5fe",
+    DEFAULT: ""
 };
 BLOCK_COLORS.DEFAULT = BLOCK_COLORS.WHITE;
 const BLOCK_ROW_COUNT = 5;
@@ -305,7 +312,7 @@ function startNewGame() {
 
     showNode(startScreen);
 
-    svg.node.style.cursor = "none";
+    // svg.node.style.cursor = "none";
 
     topBar.points.text = 0;
     topBar.blocksLeft.text = blocks.length;
@@ -385,7 +392,7 @@ function respawn() {
 document.addEventListener("DOMContentLoaded", () => {
     init();
 
-    const moveBarThrottled = _.throttle(moveBar, 10);
+    const moveBarThrottled = throttle(moveBar, 10);
     document.addEventListener("mousemove", moveBarThrottled);
 
     startScreen.btn.addEventListener("click", (e) => {

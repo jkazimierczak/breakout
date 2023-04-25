@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-const COLLISION = {
+export const COLLISION = {
     NONE: Symbol("NONE"),
     TOP: Symbol("TOP"),
     RIGHT: Symbol("RIGHT"),
@@ -28,7 +28,7 @@ const COLLISION = {
     LEFT: Symbol("LEFT"),
 };
 
-class SVGNode {
+export class SVGNode {
     constructor(obj) {
         if (obj.selector) {
             this.node = document.querySelector(obj.selector);
