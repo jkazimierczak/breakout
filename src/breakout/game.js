@@ -1,6 +1,6 @@
 import gsap from "gsap";
-import {EasePack, RoughEase} from "gsap/EasePack";
-import {SVGNode} from "./svgnode.js";
+import { EasePack, RoughEase } from "gsap/EasePack";
+import { SVGNode } from "./svgnode.ts";
 import throttle from "lodash/throttle";
 import "@fontsource/press-start-2p";
 
@@ -29,7 +29,7 @@ const BLOCK_COLORS = {
     YELLOW: "#ffd25d",
     GREEN: "#86ffa8",
     BLUE: "#87c5fe",
-    DEFAULT: ""
+    DEFAULT: "",
 };
 BLOCK_COLORS.DEFAULT = BLOCK_COLORS.WHITE;
 const BLOCK_ROW_COUNT = 5;
@@ -124,7 +124,7 @@ class SVGScreen extends SVGNode {
 }
 
 // SVG elements
-const ball = new SVGBall({ selector: "#ball" }, BALL_INITIAL_X_DIR, BALL_INITIAL_Y_DIR);
+const ball = new SVGBall({ selector: "#ball.ts" }, BALL_INITIAL_X_DIR, BALL_INITIAL_Y_DIR);
 const frame = {
     top: new SVGNode({ selector: "#frame_top" }),
     left: new SVGNode({ selector: "#frame_left" }),
