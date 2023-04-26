@@ -3,6 +3,7 @@ import { EasePack, RoughEase } from "gsap/EasePack";
 import { SVGNode } from "./svgnode.ts";
 import throttle from "lodash/throttle";
 import "@fontsource/press-start-2p";
+import { cycleFill, flicker } from "../animations.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
@@ -41,23 +42,6 @@ let BALL_INITIAL_X: number;
 let BALL_INITIAL_Y: number;
 let paused = true;
 let barMoveEnabled = false;
-
-// Animation constants
-const cycleFill = {
-    attr: {
-        "fill-opacity": 0,
-    },
-    duration: 0.75,
-    ease: "none",
-    repeat: -1,
-    repeatDelay: 0.5,
-    yoyo: true,
-};
-const flicker = {
-    duration: 0.5,
-    opacity: 0,
-    ease: RoughEase.ease.config({ points: 30, strength: 3, clamp: true }),
-};
 
 type SVGNodeParams = ConstructorParameters<typeof SVGNode>[0];
 
