@@ -22,7 +22,7 @@ const GAME_STEP = 5;
 const BLOCK_WIDTH = 70;
 const BLOCK_HEIGHT = 30;
 const BLOCK_COUNT = 10;
-const BLOCK_COLORS = {
+const BLOCK_COLORS: Record<string, string> = {
     WHITE: "#cccccc",
     RED: "#ff5d5d",
     ORANGE: "#fdaf68",
@@ -36,9 +36,9 @@ const BLOCK_ROW_COUNT = 5;
 
 // Game variables
 let livesLeft = 3;
-let BAR_INITIAL_X = null;
-let BALL_INITIAL_X = null;
-let BALL_INITIAL_Y = null;
+let BAR_INITIAL_X: number;
+let BALL_INITIAL_X: number;
+let BALL_INITIAL_Y: number;
 let paused = true;
 let barMoveEnabled = false;
 
@@ -59,9 +59,14 @@ const flicker = {
     ease: RoughEase.ease.config({ points: 30, strength: 3, clamp: true }),
 };
 
+type SVGNodeParams = ConstructorParameters<typeof SVGNode>[0];
+
 class SVGBall extends SVGNode {
-    constructor(obj, xDir, yDir) {
+    xDir: number;
+    yDir: number;
+    constructor(obj: SVGNodeParams, xDir: number, yDir: number) {
         super(obj);
+
         this.xDir = xDir;
         this.yDir = yDir;
     }
@@ -94,13 +99,15 @@ class SVGBall extends SVGNode {
 }
 
 class SVGText extends SVGNode {
-    constructor(obj) {
+    tspan: SVGTSpanElement;
+    constructor(obj: SVGNodeParams) {
         super(obj);
-        this.tspan = this.node.querySelector("tspan");
 
-        if (!this.tspan) {
-            throw "tspan not found.";
+        const tspan = this.node.querySelector("tspan");
+        if (!tspan) {
+            throw new Error("tspan not found");
         }
+        this.tspan = tspan;
     }
 
     set text(text) {
@@ -113,13 +120,15 @@ class SVGText extends SVGNode {
 }
 
 class SVGScreen extends SVGNode {
-    constructor(obj) {
+    btn: Element;
+    constructor(obj: SVGNodeParams) {
         super(obj);
-        this.btn = this.node.querySelector(".btn");
 
-        if (!this.btn) {
-            throw "The screen has no button.";
+        const btn = this.node.querySelector(".btn");
+        if (!btn) {
+            throw new Error("The screen has no button.");
         }
+        this.btn = btn;
     }
 }
 
@@ -133,7 +142,7 @@ const frame = {
 const bar = new SVGNode({ selector: "#bar" });
 const svg = new SVGNode({ selector: "svg" });
 const deathPit = new SVGNode({ selector: "#death_pit" });
-const blocks = [];
+const blocks: [SVGNode?] = [];
 // Top bar elements
 const topBar = {
     overlay: new SVGNode({ selector: "#topBarOverlay" }),
@@ -150,14 +159,14 @@ const startScreen = new SVGScreen({ selector: "#start_screen" });
 const gameOverScreen = new SVGScreen({ selector: "#game_over_screen" });
 
 // Game functions
-function createBlock(x, y, color = BLOCK_COLORS.DEFAULT) {
+function createBlock(x: number, y: number, color = BLOCK_COLORS.DEFAULT) {
     const rect = document.createElementNS(SVGNS, "rect");
 
     // Position
-    rect.setAttribute("x", x);
-    rect.setAttribute("y", y);
-    rect.setAttribute("width", BLOCK_WIDTH);
-    rect.setAttribute("height", BLOCK_HEIGHT);
+    rect.setAttribute("x", String(x));
+    rect.setAttribute("y", String(y));
+    rect.setAttribute("width", String(BLOCK_WIDTH));
+    rect.setAttribute("height", String(BLOCK_HEIGHT));
     // Styling
     rect.setAttribute("class", "block");
     rect.setAttribute("fill", color);
@@ -176,7 +185,7 @@ function createBlockRow(index = 0, color = BLOCK_COLORS.DEFAULT) {
 
         const block = createBlock(x, y, color);
         const game = document.querySelector("#blocks");
-        game.appendChild(block);
+        game?.appendChild(block);
     }
 }
 
@@ -226,16 +235,18 @@ function drawBall() {
     checkBallBlocksCollision();
 }
 
-function checkBallBlocksCollision(distance) {
+function checkBallBlocksCollision() {
     for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i];
+
+        if (!block) return;
 
         if (ball.collidesWith(block)) {
             block.node.remove();
             blocks.splice(i, 1);
 
-            topBar.blocksLeft.text = blocks.length;
-            topBar.points.text = Number(topBar.points.text) + 1;
+            topBar.blocksLeft.text = String(blocks.length);
+            topBar.points.text = String(Number(topBar.points.text) + 1);
 
             ball.switchYDir();
             ball.switchXDir();
@@ -245,7 +256,7 @@ function checkBallBlocksCollision(distance) {
     }
 }
 
-const moveBar = (e) => {
+const moveBar = (e: MouseEvent) => {
     if (!barMoveEnabled) return;
 
     const bar_w = bar.width;
@@ -266,11 +277,11 @@ const moveBar = (e) => {
 };
 
 // Helpers
-function hideNode(node) {
+function hideNode(node: SVGNode) {
     node.set("display", "none");
 }
 
-function showNode(node) {
+function showNode(node: SVGNode) {
     node.set("display", "block");
 }
 
@@ -306,7 +317,7 @@ function init() {
 function startNewGame() {
     createAllBlocks();
     // Add all blocks to breakout elements
-    document.querySelectorAll(".block").forEach((block) => {
+    document.querySelectorAll<HTMLElement>(".block").forEach((block) => {
         blocks.push(new SVGNode({ domNode: block }));
     });
 
@@ -314,8 +325,8 @@ function startNewGame() {
 
     // svg.node.style.cursor = "none";
 
-    topBar.points.text = 0;
-    topBar.blocksLeft.text = blocks.length;
+    topBar.points.text = String(0);
+    topBar.blocksLeft.text = String(blocks.length);
 
     showNode(ball);
     showNode(bar);
@@ -395,11 +406,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const moveBarThrottled = throttle(moveBar, 10);
     document.addEventListener("mousemove", moveBarThrottled);
 
-    startScreen.btn.addEventListener("click", (e) => {
+    startScreen.btn.addEventListener("click", () => {
         startNewGame();
     });
 
-    gameOverScreen.btn.addEventListener("click", (e) => {
+    gameOverScreen.btn.addEventListener("click", () => {
         cleanUpPreviousGame();
         startNewGame();
     });
