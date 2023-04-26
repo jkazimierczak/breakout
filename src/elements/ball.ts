@@ -1,11 +1,11 @@
-import { SVGNode, SVGNodeParams } from "../breakout/svgnode.ts";
+import { SVGNode, SVGNodeParams } from "./svgnode.ts";
 import {
     BALL_DIR_X_LEFT,
     BALL_DIR_X_RIGHT,
     BALL_DIR_Y_DOWN,
     BALL_DIR_Y_UP,
     GAME_STEP,
-} from "../breakout/constants.ts";
+} from "../constants.ts";
 
 export class SVGBall extends SVGNode {
     xDir: number;

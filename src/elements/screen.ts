@@ -1,4 +1,4 @@
-import { SVGNode, SVGNodeParams } from "../breakout/svgnode.ts";
+import { SVGNode, SVGNodeParams } from "./svgnode.ts";
 
 export class SVGScreen extends SVGNode {
     btn: Element;

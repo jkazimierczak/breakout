@@ -4,7 +4,7 @@ import {
     BLOCK_HEIGHT,
     BLOCK_ROW_COUNT,
     BLOCK_WIDTH,
-} from "../breakout/constants.ts";
+} from "../constants.ts";
 
 export const SVGNS = "http://www.w3.org/2000/svg";
 
