@@ -1,19 +1,19 @@
 import gsap from "gsap";
 import { EasePack, RoughEase } from "gsap/EasePack";
-import { SVGNode } from "./elements/svgnode.ts";
+import { SVGNode } from "@/elements/svgnode.ts";
 import throttle from "lodash/throttle";
 import "@fontsource/press-start-2p";
-import { cycleFill, flicker } from "./animations.ts";
+import { cycleFill, flicker } from "@/animations.ts";
 import {
     BALL_DIR_X_LEFT,
     BALL_DIR_X_RIGHT,
     BALL_INITIAL_X_DIR,
     BALL_INITIAL_Y_DIR,
-} from "./constants.ts";
-import { SVGBall } from "./elements/ball.ts";
-import { SVGText } from "./elements/text.ts";
-import { SVGScreen } from "./elements/screen.ts";
-import { createAllBlocks } from "./elements/blocks.ts";
+} from "@/constants.ts";
+import { SVGBall } from "@/elements/ball.ts";
+import { SVGText } from "@/elements/text.ts";
+import { SVGScreen } from "@/elements/screen.ts";
+import { createAllBlocks } from "@/elements/blocks.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);

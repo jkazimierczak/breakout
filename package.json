@@ -11,7 +11,8 @@
   "devDependencies": {
     "prettier": "^2.8.8",
     "typescript": "^5.0.2",
-    "vite": "^4.3.2"
+    "vite": "^4.3.2",
+    "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
     "@fontsource/press-start-2p": "^4.5.11",
