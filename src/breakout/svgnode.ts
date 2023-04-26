@@ -45,8 +45,9 @@ export class SVGNode {
             this.node = element;
         } else if (obj.domNode) {
             this.node = obj.domNode;
+        } else {
+            throw new Error("Invalid constructor params");
         }
-        throw new Error("Invalid constructor params");
     }
 
     getStringAttr(attrName: string) {
