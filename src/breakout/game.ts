@@ -27,7 +27,7 @@ let paused = true;
 let barMoveEnabled = false;
 
 // SVG elements
-const ball = new SVGBall({ selector: "#ball.ts" }, BALL_INITIAL_X_DIR, BALL_INITIAL_Y_DIR);
+const ball = new SVGBall({ selector: "#ball" }, BALL_INITIAL_X_DIR, BALL_INITIAL_Y_DIR);
 const frame = {
     top: new SVGNode({ selector: "#frame_top" }),
     left: new SVGNode({ selector: "#frame_left" }),
