@@ -120,3 +120,5 @@ export class SVGNode {
         this.set("height", String(value));
     }
 }
+
+export type SVGNodeParams = ConstructorParameters<typeof SVGNode>[0];

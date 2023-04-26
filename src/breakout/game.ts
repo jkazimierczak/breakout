@@ -7,8 +7,6 @@ import { cycleFill, flicker } from "../animations.ts";
 import {
     BALL_DIR_X_LEFT,
     BALL_DIR_X_RIGHT,
-    BALL_DIR_Y_DOWN,
-    BALL_DIR_Y_UP,
     BALL_INITIAL_X_DIR,
     BALL_INITIAL_Y_DIR,
     BLOCK_COLORS,
@@ -16,8 +14,10 @@ import {
     BLOCK_HEIGHT,
     BLOCK_ROW_COUNT,
     BLOCK_WIDTH,
-    GAME_STEP,
 } from "./constants.ts";
+import { SVGBall } from "../elements/ball.ts";
+import { SVGText } from "../elements/text.ts";
+import { SVGScreen } from "../elements/screen.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
@@ -31,79 +31,6 @@ let BALL_INITIAL_X: number;
 let BALL_INITIAL_Y: number;
 let paused = true;
 let barMoveEnabled = false;
-
-type SVGNodeParams = ConstructorParameters<typeof SVGNode>[0];
-
-class SVGBall extends SVGNode {
-    xDir: number;
-    yDir: number;
-    constructor(obj: SVGNodeParams, xDir: number, yDir: number) {
-        super(obj);
-
-        this.xDir = xDir;
-        this.yDir = yDir;
-    }
-
-    switchXDir() {
-        if (this.xDir === BALL_DIR_X_LEFT) {
-            this.xDir = BALL_DIR_X_RIGHT;
-        } else {
-            this.xDir = BALL_DIR_X_LEFT;
-        }
-    }
-
-    switchYDir() {
-        if (this.yDir === BALL_DIR_Y_UP) {
-            this.yDir = BALL_DIR_Y_DOWN;
-        } else {
-            this.yDir = BALL_DIR_Y_UP;
-        }
-    }
-
-    nextPos() {
-        const nextXPos = this.x + GAME_STEP * this.xDir;
-        const nextYPos = this.y + GAME_STEP * this.yDir;
-
-        return {
-            nextX: nextXPos,
-            nextY: nextYPos,
-        };
-    }
-}
-
-class SVGText extends SVGNode {
-    tspan: SVGTSpanElement;
-    constructor(obj: SVGNodeParams) {
-        super(obj);
-
-        const tspan = this.node.querySelector("tspan");
-        if (!tspan) {
-            throw new Error("tspan not found");
-        }
-        this.tspan = tspan;
-    }
-
-    set text(text) {
-        this.tspan.textContent = text;
-    }
-
-    get text() {
-        return this.tspan.textContent;
-    }
-}
-
-class SVGScreen extends SVGNode {
-    btn: Element;
-    constructor(obj: SVGNodeParams) {
-        super(obj);
-
-        const btn = this.node.querySelector(".btn");
-        if (!btn) {
-            throw new Error("The screen has no button.");
-        }
-        this.btn = btn;
-    }
-}
 
 // SVG elements
 const ball = new SVGBall({ selector: "#ball.ts" }, BALL_INITIAL_X_DIR, BALL_INITIAL_Y_DIR);
