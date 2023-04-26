@@ -9,20 +9,14 @@ import {
     BALL_DIR_X_RIGHT,
     BALL_INITIAL_X_DIR,
     BALL_INITIAL_Y_DIR,
-    BLOCK_COLORS,
-    BLOCK_COUNT,
-    BLOCK_HEIGHT,
-    BLOCK_ROW_COUNT,
-    BLOCK_WIDTH,
 } from "./constants.ts";
 import { SVGBall } from "../elements/ball.ts";
 import { SVGText } from "../elements/text.ts";
 import { SVGScreen } from "../elements/screen.ts";
+import { createAllBlocks } from "../elements/blocks.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
-
-const SVGNS = "http://www.w3.org/2000/svg";
 
 // Game variables
 let livesLeft = 3;
@@ -59,45 +53,6 @@ const startScreen = new SVGScreen({ selector: "#start_screen" });
 const gameOverScreen = new SVGScreen({ selector: "#game_over_screen" });
 
 // Game functions
-function createBlock(x: number, y: number, color = BLOCK_COLORS.DEFAULT) {
-    const rect = document.createElementNS(SVGNS, "rect");
-
-    // Position
-    rect.setAttribute("x", String(x));
-    rect.setAttribute("y", String(y));
-    rect.setAttribute("width", String(BLOCK_WIDTH));
-    rect.setAttribute("height", String(BLOCK_HEIGHT));
-    // Styling
-    rect.setAttribute("class", "block");
-    rect.setAttribute("fill", color);
-
-    return rect;
-}
-
-function createBlockRow(index = 0, color = BLOCK_COLORS.DEFAULT) {
-    const FIRST_BLOCK_X = 50;
-    const FIRST_BLOCK_Y = 90;
-    const Y_OFFSET = BLOCK_HEIGHT * index;
-
-    for (let i = 0; i < BLOCK_COUNT; i++) {
-        const x = FIRST_BLOCK_X + BLOCK_WIDTH * i;
-        const y = FIRST_BLOCK_Y + Y_OFFSET;
-
-        const block = createBlock(x, y, color);
-        const game = document.querySelector("#blocks");
-        game?.appendChild(block);
-    }
-}
-
-function createAllBlocks() {
-    const colorCount = Object.keys(BLOCK_COLORS).length - 2;
-
-    for (let i = 0; i < BLOCK_ROW_COUNT; i++) {
-        const colorKey = Object.keys(BLOCK_COLORS)[1 + (i % colorCount)];
-        createBlockRow(i, BLOCK_COLORS[colorKey]);
-    }
-}
-
 function drawBall() {
     const { nextX, nextY } = ball.nextPos();
     ball.x = nextX;
