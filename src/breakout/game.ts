@@ -4,36 +4,25 @@ import { SVGNode } from "./svgnode.ts";
 import throttle from "lodash/throttle";
 import "@fontsource/press-start-2p";
 import { cycleFill, flicker } from "../animations.ts";
+import {
+    BALL_DIR_X_LEFT,
+    BALL_DIR_X_RIGHT,
+    BALL_DIR_Y_DOWN,
+    BALL_DIR_Y_UP,
+    BALL_INITIAL_X_DIR,
+    BALL_INITIAL_Y_DIR,
+    BLOCK_COLORS,
+    BLOCK_COUNT,
+    BLOCK_HEIGHT,
+    BLOCK_ROW_COUNT,
+    BLOCK_WIDTH,
+    GAME_STEP,
+} from "./constants.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
 
 const SVGNS = "http://www.w3.org/2000/svg";
-
-// Game constants
-const BALL_DIR_Y_UP = -1;
-const BALL_DIR_Y_DOWN = 1;
-const BALL_DIR_X_RIGHT = 1;
-const BALL_DIR_X_LEFT = -1;
-const BALL_INITIAL_X_DIR = BALL_DIR_X_RIGHT;
-const BALL_INITIAL_Y_DIR = BALL_DIR_Y_DOWN;
-const GAME_STEP = 5;
-
-// Constants (do not change)
-const BLOCK_WIDTH = 70;
-const BLOCK_HEIGHT = 30;
-const BLOCK_COUNT = 10;
-const BLOCK_COLORS: Record<string, string> = {
-    WHITE: "#cccccc",
-    RED: "#ff5d5d",
-    ORANGE: "#fdaf68",
-    YELLOW: "#ffd25d",
-    GREEN: "#86ffa8",
-    BLUE: "#87c5fe",
-    DEFAULT: "",
-};
-BLOCK_COLORS.DEFAULT = BLOCK_COLORS.WHITE;
-const BLOCK_ROW_COUNT = 5;
 
 // Game variables
 let livesLeft = 3;
