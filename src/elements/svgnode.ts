@@ -122,4 +122,12 @@ export class SVGNode {
     }
 }
 
+export function hideNode(node: SVGNode) {
+    node.set("display", "none");
+}
+
+export function showNode(node: SVGNode) {
+    node.set("display", "block");
+}
+
 export type SVGNodeParams = ConstructorParameters<typeof SVGNode>[0];

@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { EasePack, RoughEase } from "gsap/EasePack";
-import { SVGNode } from "@/elements/svgnode.ts";
+import { hideNode, showNode, SVGNode } from "@/elements/svgnode.ts";
 import throttle from "lodash/throttle";
 import "@fontsource/press-start-2p";
 import { cycleFill, flicker } from "@/animations.ts";
@@ -130,15 +130,6 @@ const moveBar = (e: MouseEvent) => {
         bar.x = boundRight;
     }
 };
-
-// Helpers
-function hideNode(node: SVGNode) {
-    node.set("display", "none");
-}
-
-function showNode(node: SVGNode) {
-    node.set("display", "block");
-}
 
 // Main breakout loop
 const drawGame = () => {
