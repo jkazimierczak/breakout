@@ -1,102 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Breakout</title>
-  </head>
-  <body>
-    <svg width="800" height="640" viewBox="0 0 800 640" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g id="game">
-        <rect width="800" height="640" fill="black" />
-        <rect id="death_pit" x="20" y="639" width="760" height="1" fill="black" />
-        <rect id="frame_left" y="40" width="20" height="600" fill="black" />
-        <rect id="frame_right" x="780" y="40" width="20" height="600" fill="black" />
-        <rect id="frame_top" x="20" y="40" width="760" height="20" fill="black" />
-        <path id="frame" fill-rule="evenodd" clip-rule="evenodd" d="M20 60L780 60V640H800V40H780L20 40L0 40V640H20V60Z" fill="url(#paint0_linear_28_8)" />
-        <rect id="ball" x="395" y="598" width="10" height="10" fill="#FF8A00" />
-        <rect id="bar" x="360" y="618" width="80" height="10" fill="#FF8A00" />
-        <text id="pointsLabel" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="14" letter-spacing="0em">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakout</title>
+</head>
+<body>
+<svg width="800" height="640" viewBox="0 0 800 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="game">
+    <rect width="800" height="640" fill="black" />
+    <rect id="death_pit" x="20" y="639" width="760" height="1" fill="black" />
+    <rect id="frame_left" y="40" width="20" height="600" fill="black" />
+    <rect id="frame_right" x="780" y="40" width="20" height="600" fill="black" />
+    <rect id="frame_top" x="20" y="40" width="760" height="20" fill="black" />
+    <path id="frame" fill-rule="evenodd" clip-rule="evenodd" d="M20 60L780 60V640H800V40H780L20 40L0 40V640H20V60Z" fill="url(#paint0_linear_28_8)" />
+    <rect id="ball" x="395" y="598" width="10" height="10" fill="#FF8A00" />
+    <rect id="bar" x="360" y="618" width="80" height="10" fill="#FF8A00" />
+    <text id="pointsLabel" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="14" letter-spacing="0em">
                 <tspan x="20" y="27">POINTS:</tspan>
             </text>
-        <text id="points" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="14" letter-spacing="0em">
+    <text id="points" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="14" letter-spacing="0em">
                 <tspan x="118" y="27">0</tspan>
             </text>
-        <text id="blocksLeft" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="24" letter-spacing="0em">
+    <text id="blocksLeft" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="24" letter-spacing="0em">
                 <tspan x="376" y="32">40</tspan>
             </text>
-        <g id="start_screen">
-          <g id="play_btn" class="btn">
-            <rect width="120" height="40" transform="translate(340 338)" fill="#38FF34" />
-            <text id="play" fill="black" fill-opacity="0.5" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
-                        <tspan x="360" y="368">PLAY</tspan>
-                    </text>
-          </g>
-          <text id="title" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
-                    <tspan x="320" y="318">BREAKOUT</tspan>
-                </text>
-        </g>
-        <g id="game_over_screen">
-          <g id="play_again_btn" class="btn">
-            <rect width="240" height="40" transform="translate(280 358)" fill="#38FF34" />
-            <text id="play again" fill="black" fill-opacity="0.5" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
-                        <tspan x="300" y="388">PLAY AGAIN</tspan>
-                    </text>
-          </g>
-          <text id="title_2" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="40" letter-spacing="0em">
+    <g id="start_screen">
+      <g id="play_btn" class="btn">
+        <rect width="120" height="40" x="340" y="338" fill="#38FF34" />
+        <text id="play" fill="black" fill-opacity="0.5" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
+                <tspan x="360" y="368">PLAY</tspan>
+            </text>
+      </g>
+      <text id="title" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
+              <tspan x="320" y="318">BREAKOUT</tspan>
+          </text>
+    </g>
+    <g id="game_over_screen">
+      <g id="play_again_btn" class="btn">
+        <rect width="240" height="40" x="280" y="358" fill="#38FF34" />
+        <text id="play again" fill="black" fill-opacity="0.5" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
+                <tspan x="300" y="388">PLAY AGAIN</tspan>
+            </text>
+      </g>
+      <text id="title_2" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="40" letter-spacing="0em">
                     <tspan x="220" y="338">GAME OVER</tspan>
                 </text>
-        </g>
-        <g id="game_finished_screen" style="display: none;">
-          <g id="play_again_btn_2">
-            <rect width="240" height="40" transform="translate(280 358)" fill="#38FF34" />
-            <text id="play again_2" fill="black" fill-opacity="0.5" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
+    </g>
+    <g id="game_finished_screen" style="display: none;">
+      <g id="play_again_btn_2">
+        <rect width="240" height="40" x="280" y="358" fill="#38FF34" />
+        <text id="play again_2" fill="black" fill-opacity="0.5" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="20" letter-spacing="0em">
                         <tspan x="300" y="388">PLAY AGAIN</tspan>
                     </text>
-          </g>
-          <text id="title_3" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="40" letter-spacing="0em">
+      </g>
+      <text id="title_3" fill="white" xml:space="preserve" style="white-space: pre" font-family="Press Start 2P" font-size="40" letter-spacing="0em">
                     <tspan x="240" y="338">YOU WON!</tspan>
                 </text>
+    </g>
+    <g id="hearts">
+      <g id="heart_1" clip-path="url(#clip1_28_8)" class="heart">
+        <g id="Group">
+          <path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M766.667 8H761.333V10.6667H758.667V13.3333H756V21.3333H758.667V24H761.333V26.6667H764V29.3333H766.667V32H769.333V29.3333H772V26.6667H774.667V24H777.333V21.3333H780V13.3333H777.333V10.6667H774.667V8H769.333V10.6667H766.667V8ZM766.667 10.6667V13.3333H769.333V10.6667H774.667V13.3333H777.333V21.3333H774.667V24H772V26.6667H769.333V29.3333H766.667V26.6667H764V24H761.333V21.3333H758.667V13.3333H761.333V10.6667H766.667Z" fill="black" />
+          <path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M758.667 18.6667H761.333V21.3333H758.667V18.6667ZM764 24H761.333V21.3333H764V24ZM766.667 26.6667H764V24H766.667V26.6667ZM769.333 26.6667V29.3333H766.667V26.6667H769.333ZM772 24V26.6667H769.333V24H772ZM774.667 21.3333H772V24H774.667V21.3333ZM774.667 21.3333V18.6667H777.333V21.3333H774.667Z" fill="#BC0301" />
+          <path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M774.667 10.6667H769.333V13.3333H766.667V10.6667H761.333V13.3333H758.667V18.6667H761.333V21.3333H764V24H766.667V26.6667H769.333V24H772V21.3333H774.667V18.6667H777.333V13.3333H774.667V10.6667Z" fill="#FE0000" />
+          <path id="Vector_4" d="M764 13.3333H761.333V16H764V13.3333Z" fill="white" />
         </g>
-        <g id="hearts">
-          <g id="heart_1" clip-path="url(#clip1_28_8)" class="heart">
-            <g id="Group">
-              <path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M766.667 8H761.333V10.6667H758.667V13.3333H756V21.3333H758.667V24H761.333V26.6667H764V29.3333H766.667V32H769.333V29.3333H772V26.6667H774.667V24H777.333V21.3333H780V13.3333H777.333V10.6667H774.667V8H769.333V10.6667H766.667V8ZM766.667 10.6667V13.3333H769.333V10.6667H774.667V13.3333H777.333V21.3333H774.667V24H772V26.6667H769.333V29.3333H766.667V26.6667H764V24H761.333V21.3333H758.667V13.3333H761.333V10.6667H766.667Z" fill="black" />
-              <path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M758.667 18.6667H761.333V21.3333H758.667V18.6667ZM764 24H761.333V21.3333H764V24ZM766.667 26.6667H764V24H766.667V26.6667ZM769.333 26.6667V29.3333H766.667V26.6667H769.333ZM772 24V26.6667H769.333V24H772ZM774.667 21.3333H772V24H774.667V21.3333ZM774.667 21.3333V18.6667H777.333V21.3333H774.667Z" fill="#BC0301" />
-              <path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M774.667 10.6667H769.333V13.3333H766.667V10.6667H761.333V13.3333H758.667V18.6667H761.333V21.3333H764V24H766.667V26.6667H769.333V24H772V21.3333H774.667V18.6667H777.333V13.3333H774.667V10.6667Z" fill="#FE0000" />
-              <path id="Vector_4" d="M764 13.3333H761.333V16H764V13.3333Z" fill="white" />
-            </g>
-          </g>
-          <g id="heart_2" clip-path="url(#clip2_28_8)" class="heart">
-            <g id="Group_2">
-              <path id="Vector_5" fill-rule="evenodd" clip-rule="evenodd" d="M738.667 8H733.333V10.6667H730.667V13.3333H728V21.3333H730.667V24H733.333V26.6667H736V29.3333H738.667V32H741.333V29.3333H744V26.6667H746.667V24H749.333V21.3333H752V13.3333H749.333V10.6667H746.667V8H741.333V10.6667H738.667V8ZM738.667 10.6667V13.3333H741.333V10.6667H746.667V13.3333H749.333V21.3333H746.667V24H744V26.6667H741.333V29.3333H738.667V26.6667H736V24H733.333V21.3333H730.667V13.3333H733.333V10.6667H738.667Z" fill="black" />
-              <path id="Vector_6" fill-rule="evenodd" clip-rule="evenodd" d="M730.667 18.6667H733.333V21.3333H730.667V18.6667ZM736 24H733.333V21.3333H736V24ZM738.667 26.6667H736V24H738.667V26.6667ZM741.333 26.6667V29.3333H738.667V26.6667H741.333ZM744 24V26.6667H741.333V24H744ZM746.667 21.3333H744V24H746.667V21.3333ZM746.667 21.3333V18.6667H749.333V21.3333H746.667Z" fill="#BC0301" />
-              <path id="Vector_7" fill-rule="evenodd" clip-rule="evenodd" d="M746.667 10.6667H741.333V13.3333H738.667V10.6667H733.333V13.3333H730.667V18.6667H733.333V21.3333H736V24H738.667V26.6667H741.333V24H744V21.3333H746.667V18.6667H749.333V13.3333H746.667V10.6667Z" fill="#FE0000" />
-              <path id="Vector_8" d="M736 13.3333H733.333V16H736V13.3333Z" fill="white" />
-            </g>
-          </g>
-          <g id="heart_3" clip-path="url(#clip3_28_8)" class="heart">
-            <g id="Group_3">
-              <path id="Vector_9" fill-rule="evenodd" clip-rule="evenodd" d="M710.667 8H705.333V10.6667H702.667V13.3333H700V21.3333H702.667V24H705.333V26.6667H708V29.3333H710.667V32H713.333V29.3333H716V26.6667H718.667V24H721.333V21.3333H724V13.3333H721.333V10.6667H718.667V8H713.333V10.6667H710.667V8ZM710.667 10.6667V13.3333H713.333V10.6667H718.667V13.3333H721.333V21.3333H718.667V24H716V26.6667H713.333V29.3333H710.667V26.6667H708V24H705.333V21.3333H702.667V13.3333H705.333V10.6667H710.667Z" fill="black" />
-              <path id="Vector_10" fill-rule="evenodd" clip-rule="evenodd" d="M702.667 18.6667H705.333V21.3333H702.667V18.6667ZM708 24H705.333V21.3333H708V24ZM710.667 26.6667H708V24H710.667V26.6667ZM713.333 26.6667V29.3333H710.667V26.6667H713.333ZM716 24V26.6667H713.333V24H716ZM718.667 21.3333H716V24H718.667V21.3333ZM718.667 21.3333V18.6667H721.333V21.3333H718.667Z" fill="#BC0301" />
-              <path id="Vector_11" fill-rule="evenodd" clip-rule="evenodd" d="M718.667 10.6667H713.333V13.3333H710.667V10.6667H705.333V13.3333H702.667V18.6667H705.333V21.3333H708V24H710.667V26.6667H713.333V24H716V21.3333H718.667V18.6667H721.333V13.3333H718.667V10.6667Z" fill="#FE0000" />
-              <path id="Vector_12" d="M708 13.3333H705.333V16H708V13.3333Z" fill="white" />
-            </g>
-          </g>
-        </g>
-        <rect id="topBarOverlay" width="800" height="40" fill="black" />
-        <g id="blocks"></g>
       </g>
-      <defs>
-        <linearGradient id="paint0_linear_28_8" x1="400" y1="40" x2="400" y2="705" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#8F8F8F" />
-          <stop offset="0.9999" stop-color="#A8A8A8" stop-opacity="0" />
-          <stop offset="1" stop-color="#D9D9D9" stop-opacity="0" />
-        </linearGradient>
-      </defs>
-    </svg>
+      <g id="heart_2" clip-path="url(#clip2_28_8)" class="heart">
+        <g id="Group_2">
+          <path id="Vector_5" fill-rule="evenodd" clip-rule="evenodd" d="M738.667 8H733.333V10.6667H730.667V13.3333H728V21.3333H730.667V24H733.333V26.6667H736V29.3333H738.667V32H741.333V29.3333H744V26.6667H746.667V24H749.333V21.3333H752V13.3333H749.333V10.6667H746.667V8H741.333V10.6667H738.667V8ZM738.667 10.6667V13.3333H741.333V10.6667H746.667V13.3333H749.333V21.3333H746.667V24H744V26.6667H741.333V29.3333H738.667V26.6667H736V24H733.333V21.3333H730.667V13.3333H733.333V10.6667H738.667Z" fill="black" />
+          <path id="Vector_6" fill-rule="evenodd" clip-rule="evenodd" d="M730.667 18.6667H733.333V21.3333H730.667V18.6667ZM736 24H733.333V21.3333H736V24ZM738.667 26.6667H736V24H738.667V26.6667ZM741.333 26.6667V29.3333H738.667V26.6667H741.333ZM744 24V26.6667H741.333V24H744ZM746.667 21.3333H744V24H746.667V21.3333ZM746.667 21.3333V18.6667H749.333V21.3333H746.667Z" fill="#BC0301" />
+          <path id="Vector_7" fill-rule="evenodd" clip-rule="evenodd" d="M746.667 10.6667H741.333V13.3333H738.667V10.6667H733.333V13.3333H730.667V18.6667H733.333V21.3333H736V24H738.667V26.6667H741.333V24H744V21.3333H746.667V18.6667H749.333V13.3333H746.667V10.6667Z" fill="#FE0000" />
+          <path id="Vector_8" d="M736 13.3333H733.333V16H736V13.3333Z" fill="white" />
+        </g>
+      </g>
+      <g id="heart_3" clip-path="url(#clip3_28_8)" class="heart">
+        <g id="Group_3">
+          <path id="Vector_9" fill-rule="evenodd" clip-rule="evenodd" d="M710.667 8H705.333V10.6667H702.667V13.3333H700V21.3333H702.667V24H705.333V26.6667H708V29.3333H710.667V32H713.333V29.3333H716V26.6667H718.667V24H721.333V21.3333H724V13.3333H721.333V10.6667H718.667V8H713.333V10.6667H710.667V8ZM710.667 10.6667V13.3333H713.333V10.6667H718.667V13.3333H721.333V21.3333H718.667V24H716V26.6667H713.333V29.3333H710.667V26.6667H708V24H705.333V21.3333H702.667V13.3333H705.333V10.6667H710.667Z" fill="black" />
+          <path id="Vector_10" fill-rule="evenodd" clip-rule="evenodd" d="M702.667 18.6667H705.333V21.3333H702.667V18.6667ZM708 24H705.333V21.3333H708V24ZM710.667 26.6667H708V24H710.667V26.6667ZM713.333 26.6667V29.3333H710.667V26.6667H713.333ZM716 24V26.6667H713.333V24H716ZM718.667 21.3333H716V24H718.667V21.3333ZM718.667 21.3333V18.6667H721.333V21.3333H718.667Z" fill="#BC0301" />
+          <path id="Vector_11" fill-rule="evenodd" clip-rule="evenodd" d="M718.667 10.6667H713.333V13.3333H710.667V10.6667H705.333V13.3333H702.667V18.6667H705.333V21.3333H708V24H710.667V26.6667H713.333V24H716V21.3333H718.667V18.6667H721.333V13.3333H718.667V10.6667Z" fill="#FE0000" />
+          <path id="Vector_12" d="M708 13.3333H705.333V16H708V13.3333Z" fill="white" />
+        </g>
+      </g>
+    </g>
+    <rect id="topBarOverlay" width="800" height="40" fill="black" />
+    <g id="blocks"></g>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_28_8" x1="400" y1="40" x2="400" y2="705" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8F8F8F" />
+      <stop offset="0.9999" stop-color="#A8A8A8" stop-opacity="0" />
+      <stop offset="1" stop-color="#D9D9D9" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+</svg>
 
-    <script type="module" src="/src/game.ts"></script>
-  </body>
+<script type="module" src="/src/game.ts"></script>
+</body>
 </html>
