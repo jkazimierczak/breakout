@@ -4,16 +4,11 @@ import { hideNode, showNode, SVGNode } from "@/elements/svgnode.ts";
 import throttle from "lodash/throttle";
 import "@fontsource/press-start-2p";
 import { cycleFill, flicker } from "@/animations.ts";
-import {
-    BALL_DIR_X_LEFT,
-    BALL_DIR_X_RIGHT,
-    BALL_INITIAL_X_DIR,
-    BALL_INITIAL_Y_DIR,
-} from "@/constants.ts";
 import { SVGBall } from "@/elements/ball.ts";
 import { SVGText } from "@/elements/text.ts";
 import { SVGScreen } from "@/elements/screen.ts";
 import { createAllBlocks } from "@/elements/blocks.ts";
+import { BALL_SPEED } from "@/constants.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
@@ -27,7 +22,7 @@ let paused = true;
 let barMoveEnabled = false;
 
 // SVG elements
-const ball = new SVGBall({ selector: "#ball" }, BALL_INITIAL_X_DIR, BALL_INITIAL_Y_DIR);
+const ball = new SVGBall({ selector: "#ball" }, 90);
 const frame = {
     top: new SVGNode({ selector: "#frame_top" }),
     left: new SVGNode({ selector: "#frame_left" }),
@@ -54,36 +49,55 @@ const gameOverScreen = new SVGScreen({ selector: "#game_over_screen" });
 
 // Game functions
 function drawBall() {
-    const { nextX, nextY } = ball.nextPos();
-    ball.x = nextX;
-    ball.y = nextY;
-
     // Top frame collision
     if (ball.collidesWith(frame.top)) {
+        ball.y = frame.top.y + frame.top.height;
         ball.switchYDir();
     }
     // Right frame collision
-    else if (ball.collidesWith(frame.right)) {
+    if (ball.collidesWith(frame.right)) {
+        ball.x = frame.right.x - ball.width;
         ball.switchXDir();
     }
     // Left frame collision
-    else if (ball.collidesWith(frame.left)) {
+    if (ball.collidesWith(frame.left)) {
+        ball.x = frame.left.x + frame.left.width;
         ball.switchXDir();
     }
     // Bar collision
-    else if (ball.collidesWith(bar)) {
-        ball.switchYDir();
+    if (ball.collidesWith(bar)) {
+        ball.y = bar.y - ball.height;
 
-        // Switch direction depending on the side the bar was hit
-        const barMid = bar.x + bar.width / 2;
-        if (ball.x < barMid) {
-            ball.xDir = BALL_DIR_X_LEFT;
+        // Calculate the point of impact on the bar
+        const ballMiddleX = ball.x + ball.width / 2;
+        const barMiddleX = bar.x + bar.width / 2;
+        const diff = ballMiddleX - barMiddleX;
+
+        if (diff === 0) {
+            // hit the middle of the bar
+            ball.switchYDir();
         } else {
-            ball.xDir = BALL_DIR_X_RIGHT;
+            // hit the edge or between the edge and the middle of the bar
+            const maxAngle = 90 * (Math.PI / 180);
+            const minAngle = 20 * (Math.PI / 180);
+            const angleDiff = Math.abs(diff) / (bar.width / 2);
+            const newAngle = maxAngle + angleDiff * (minAngle - maxAngle);
+
+            if (diff < 0) {
+                ball.velocity.x = -BALL_SPEED * Math.cos(newAngle);
+                ball.velocity.y = -BALL_SPEED * Math.sin(newAngle);
+            } else {
+                ball.velocity.x = BALL_SPEED * Math.cos(newAngle);
+                ball.velocity.y = -BALL_SPEED * Math.sin(newAngle);
+            }
         }
     }
+
+    ball.x += ball.velocity.x;
+    ball.y += ball.velocity.y;
+
     // Bottom edge collision
-    else if (ball.collidesWith(deathPit)) {
+    if (ball.collidesWith(deathPit)) {
         deathPitCollisionHandler();
     }
     // Blocks collision
@@ -191,8 +205,8 @@ function startNewGame() {
 function cleanUpPreviousGame() {
     ball.x = BALL_INITIAL_X;
     ball.y = BALL_INITIAL_Y;
-    ball.xDir = BALL_INITIAL_X_DIR;
-    ball.yDir = BALL_INITIAL_Y_DIR;
+    // ball.xDir = BALL_INITIAL_X_DIR;
+    // ball.yDir = BALL_INITIAL_Y_DIR;
 
     bar.x = BAR_INITIAL_X;
     livesLeft = 3;
@@ -235,8 +249,8 @@ function respawn() {
     bar.x = BAR_INITIAL_X;
     ball.x = BALL_INITIAL_X;
     ball.y = BALL_INITIAL_Y;
-    ball.xDir = BALL_INITIAL_X_DIR;
-    ball.yDir = BALL_INITIAL_Y_DIR;
+    // ball.xDir = BALL_INITIAL_X_DIR;
+    // ball.yDir = BALL_INITIAL_Y_DIR;
 
     setTimeout(() => {
         paused = false;

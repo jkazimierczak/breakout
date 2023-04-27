@@ -5,7 +5,7 @@ export const BALL_DIR_X_RIGHT = 1;
 export const BALL_DIR_X_LEFT = -1;
 export const BALL_INITIAL_X_DIR = BALL_DIR_X_RIGHT;
 export const BALL_INITIAL_Y_DIR = BALL_DIR_Y_DOWN;
-export const GAME_STEP = 5;
+export const BALL_SPEED = 6;
 // Constants (do not change)
 export const BLOCK_WIDTH = 70;
 export const BLOCK_HEIGHT = 30;

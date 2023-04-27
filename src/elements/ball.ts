@@ -1,46 +1,22 @@
 import { SVGNode, SVGNodeParams } from "./svgnode.ts";
-import {
-    BALL_DIR_X_LEFT,
-    BALL_DIR_X_RIGHT,
-    BALL_DIR_Y_DOWN,
-    BALL_DIR_Y_UP,
-    GAME_STEP,
-} from "@/constants.ts";
+import { BALL_SPEED } from "@/constants.ts";
 
 export class SVGBall extends SVGNode {
-    xDir: number;
-    yDir: number;
+    velocity = { x: 0, y: 0 };
 
-    constructor(obj: SVGNodeParams, xDir: number, yDir: number) {
+    constructor(obj: SVGNodeParams, initialAngle = 90) {
         super(obj);
 
-        this.xDir = xDir;
-        this.yDir = yDir;
+        const direction = (initialAngle * Math.PI) / 180;
+        this.velocity.x = BALL_SPEED * Math.cos(-direction);
+        this.velocity.y = BALL_SPEED * Math.sin(-direction);
     }
 
     switchXDir() {
-        if (this.xDir === BALL_DIR_X_LEFT) {
-            this.xDir = BALL_DIR_X_RIGHT;
-        } else {
-            this.xDir = BALL_DIR_X_LEFT;
-        }
+        this.velocity.x = -this.velocity.x;
     }
 
     switchYDir() {
-        if (this.yDir === BALL_DIR_Y_UP) {
-            this.yDir = BALL_DIR_Y_DOWN;
-        } else {
-            this.yDir = BALL_DIR_Y_UP;
-        }
-    }
-
-    nextPos() {
-        const nextXPos = this.x + GAME_STEP * this.xDir;
-        const nextYPos = this.y + GAME_STEP * this.yDir;
-
-        return {
-            nextX: nextXPos,
-            nextY: nextYPos,
-        };
+        this.velocity.y = -this.velocity.y;
     }
 }
