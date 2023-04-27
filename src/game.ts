@@ -9,6 +9,7 @@ import { SVGText } from "@/elements/text.ts";
 import { SVGScreen } from "@/elements/screen.ts";
 import { createAllBlocks } from "@/elements/blocks.ts";
 import { BALL_SPEED } from "@/constants.ts";
+import "./style.css";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
@@ -22,6 +23,7 @@ let paused = true;
 let barMoveEnabled = false;
 
 // SVG elements
+const game = new SVGNode({ selector: "#game" });
 const ball = new SVGBall({ selector: "#ball" }, 90);
 const frame = {
     top: new SVGNode({ selector: "#frame_top" }),
@@ -127,20 +129,21 @@ function checkBallBlocksCollision() {
 
 const moveBar = (e: MouseEvent) => {
     if (!barMoveEnabled) return;
+    if (!game.node.parentElement) return;
 
-    const bar_w = bar.width;
-    const clientX = e.clientX - bar_w / 2;
+    const svgBoundingRect = game.node.parentElement.getBoundingClientRect();
+    const clientX = e.clientX - bar.width / 2 - svgBoundingRect.left;
     const boundLeft = frame.left.width;
-    const boundRight = frame.right.x - bar_w;
+    const boundRight = frame.right.x - bar.width;
 
     if (clientX > boundLeft && clientX < boundRight) {
         bar.x = clientX;
     }
     // If the mouse moves out of bounds while the event
     // is throttled - set the position to the end
-    else if (clientX <= boundLeft) {
+    else if (e.clientX <= svgBoundingRect.left + frame.left.width) {
         bar.x = boundLeft;
-    } else if (clientX >= boundRight) {
+    } else if (e.clientX >= svgBoundingRect.left + svgBoundingRect.width - frame.right.width) {
         bar.x = boundRight;
     }
 };

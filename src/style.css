@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    padding: 0;
+
+    height: 100vh;
+
+    background-color: #000000;
+    display: grid;
+    justify-items: center;
+    align-content: end;
+}
+
+svg {
+    display: block;
+    min-height: 100vh;
+}
+
+text {
+    font-family: "Press Start 2P", sans-serif;
+}
+
+#title {
+    user-select: none;
+}
+
+#play_btn:hover {
+    cursor: pointer;
+}
