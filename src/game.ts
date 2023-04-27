@@ -205,8 +205,7 @@ function startNewGame() {
 function cleanUpPreviousGame() {
     ball.x = BALL_INITIAL_X;
     ball.y = BALL_INITIAL_Y;
-    // ball.xDir = BALL_INITIAL_X_DIR;
-    // ball.yDir = BALL_INITIAL_Y_DIR;
+    ball.restore();
 
     bar.x = BAR_INITIAL_X;
     livesLeft = 3;
@@ -249,8 +248,7 @@ function respawn() {
     bar.x = BAR_INITIAL_X;
     ball.x = BALL_INITIAL_X;
     ball.y = BALL_INITIAL_Y;
-    // ball.xDir = BALL_INITIAL_X_DIR;
-    // ball.yDir = BALL_INITIAL_Y_DIR;
+    ball.restore();
 
     setTimeout(() => {
         paused = false;
