@@ -190,7 +190,7 @@ function startNewGame() {
 
     showNode(startScreen);
 
-    // svg.node.style.cursor = "none";
+    svg.node.style.cursor = "none";
 
     topBar.points.text = String(0);
     topBar.blocksLeft.text = String(blocks.length);
@@ -241,7 +241,7 @@ function deathPitCollisionHandler() {
 
     if (livesLeft - 1 === 0) {
         setTimeout(() => showNode(gameOverScreen), 500);
-        svg.node.style.cursor = "pointer";
+        svg.node.style.cursor = "auto";
         return;
     }
 

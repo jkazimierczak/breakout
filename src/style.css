@@ -23,6 +23,8 @@ text {
     user-select: none;
 }
 
-#play_btn:hover {
+#play_btn:hover,
+#play_again_btn:hover,
+#play_again_btn_2:hover {
     cursor: pointer;
 }
