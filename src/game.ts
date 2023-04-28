@@ -226,8 +226,19 @@ function init() {
 function startNewGame() {
     createAllBlocks();
     // Add all blocks to breakout elements
-    document.querySelectorAll<HTMLElement>(".block").forEach((block) => {
+    document.querySelectorAll<HTMLElement>(".block").forEach((block, idx) => {
         blocks.push(new SVGNode({ domNode: block }));
+
+        gsap.fromTo(
+            block,
+            {
+                opacity: 0,
+            },
+            {
+                opacity: 1,
+                delay: idx / 100,
+            }
+        );
     });
 
     showNode(startScreen);
