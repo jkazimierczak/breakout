@@ -95,6 +95,8 @@ function drawBall() {
                 ball.velocity.y = -BALL_SPEED * Math.sin(newAngle);
             }
         }
+
+        gsap.fromTo(bar.node, { attr: { y: bar.y1 + 3 } }, { attr: { y: bar.y1 }, duration: 0.2 });
     }
 
     ball.x1 += ball.velocity.x;
@@ -122,7 +124,14 @@ function checkBallBlocksCollision() {
                 ball.switchXDir();
             }
 
-            block.node.remove();
+            block.set("opacity", "1");
+            const durationMs = 100;
+            gsap.to(block.node, {
+                duration: durationMs / 1000,
+                attr: { opacity: 0 },
+                ease: "ease",
+            });
+            setTimeout(() => block.node.remove(), durationMs);
             blocks.splice(i, 1);
 
             topBar.blocksLeft.text = String(blocks.length);
@@ -288,8 +297,16 @@ function deathPitCollisionHandler() {
     gsap.set(heart.node, { attr: { "fill-opacity": 0 }, delay: 0.5 });
 
     if (livesLeft - 1 === 0) {
-        setTimeout(() => showNode(gameOverScreen), 500);
         svg.node.style.cursor = "auto";
+
+        showNode(gameOverScreen);
+        gameOverScreen.set("opacity", "0");
+        gsap.to(gameOverScreen.node, {
+            duration: 1,
+            attr: { opacity: 1 },
+            ease: "ease",
+        });
+
         return;
     }
 
