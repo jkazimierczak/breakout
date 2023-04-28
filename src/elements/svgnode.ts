@@ -60,10 +60,10 @@ export class SVGNode {
      */
     collidesWith(svg: SVGNode) {
         return (
-            this.x + this.width >= svg.x && // left-edge
-            this.x <= svg.x + svg.width && // right-edge
-            this.y + this.height >= svg.y && // top-edge
-            this.y <= svg.y + svg.height // bottom-edge
+            this.x2 >= svg.x1 && // left-edge
+            this.x1 <= svg.x2 && // right-edge
+            this.y2 >= svg.y1 && // top-edge
+            this.y1 <= svg.y2 // bottom-edge
         );
     }
 
@@ -85,19 +85,19 @@ export class SVGNode {
     }
 
     get topEdge() {
-        return [this.x, this.y, this.x1, this.y];
+        return [this.x1, this.y1, this.x2, this.y1];
     }
 
     get rightEdge() {
-        return [this.x1, this.y, this.x1, this.y1];
+        return [this.x2, this.y1, this.x2, this.y2];
     }
 
     get bottomEdge() {
-        return [this.x, this.y1, this.x1, this.y1];
+        return [this.x1, this.y2, this.x2, this.y2];
     }
 
     get leftEdge() {
-        return [this.x, this.y, this.x, this.y1];
+        return [this.x1, this.y1, this.x1, this.y2];
     }
 
     /**
@@ -111,8 +111,8 @@ export class SVGNode {
      * Returns the edges of top triangular overlap area.
      */
     get topOverlapAreaEdges() {
-        const triangle_left = [this.x, this.y, this.midX, this.midY];
-        const triangle_right = [this.x1, this.y, this.midX, this.midY];
+        const triangle_left = [this.x1, this.y1, this.midX, this.midY];
+        const triangle_right = [this.x2, this.y1, this.midX, this.midY];
         return [this.topEdge, triangle_right, triangle_left];
     }
 
@@ -120,8 +120,8 @@ export class SVGNode {
      * Returns the edges of right triangular overlap area.
      */
     get rightOverlapAreaEdges() {
-        const triangle_top = [this.x1, this.y, this.midX, this.midY];
-        const triangle_bottom = [this.x1, this.y1, this.midX, this.midY];
+        const triangle_top = [this.x2, this.y1, this.midX, this.midY];
+        const triangle_bottom = [this.x2, this.y2, this.midX, this.midY];
         return [this.rightEdge, triangle_bottom, triangle_top];
     }
 
@@ -129,8 +129,8 @@ export class SVGNode {
      * Returns the edges of bottom triangular overlap area.
      */
     get bottomOverlapAreaEdges() {
-        const triangle_left = [this.x, this.y1, this.midX, this.midY];
-        const triangle_right = [this.x1, this.y1, this.midX, this.midY];
+        const triangle_left = [this.x1, this.y2, this.midX, this.midY];
+        const triangle_right = [this.x2, this.y2, this.midX, this.midY];
         return [this.bottomEdge, triangle_right, triangle_left];
     }
 
@@ -138,13 +138,13 @@ export class SVGNode {
      * Returns the edges of left triangular overlap area.
      */
     get leftOverlapAreaEdges() {
-        const triangle_top = [this.x, this.y, this.midX, this.midY];
-        const triangle_bottom = [this.x, this.y1, this.midX, this.midY];
+        const triangle_top = [this.x1, this.y1, this.midX, this.midY];
+        const triangle_bottom = [this.x1, this.y2, this.midX, this.midY];
         return [this.leftEdge, triangle_top, triangle_bottom];
     }
 
     overlapTop(svg: SVGNode) {
-        return SVGNode.isPointInside(this.topOverlapAreaEdges, svg.midX, svg.y1);
+        return SVGNode.isPointInside(this.topOverlapAreaEdges, svg.midX, svg.y2);
     }
 
     /**
@@ -153,15 +153,15 @@ export class SVGNode {
      * @param svg
      */
     overlapRight(svg: SVGNode) {
-        return SVGNode.isPointInside(this.rightOverlapAreaEdges, svg.x - 1, svg.midY);
+        return SVGNode.isPointInside(this.rightOverlapAreaEdges, svg.x1 - 1, svg.midY);
     }
 
     overlapBottom(svg: SVGNode) {
-        return SVGNode.isPointInside(this.bottomOverlapAreaEdges, svg.midX, svg.y - 1);
+        return SVGNode.isPointInside(this.bottomOverlapAreaEdges, svg.midX, svg.y1 - 1);
     }
 
     overlapLeft(svg: SVGNode) {
-        return SVGNode.isPointInside(this.leftOverlapAreaEdges, svg.x1, svg.midY);
+        return SVGNode.isPointInside(this.leftOverlapAreaEdges, svg.x2, svg.midY);
     }
 
     overlap(svg: SVGNode) {
@@ -174,36 +174,36 @@ export class SVGNode {
         return overlap;
     }
 
-    get x() {
+    get x1() {
         return this.get("x");
     }
 
-    set x(value: number) {
+    set x1(value: number) {
         this.set("x", String(value));
     }
 
-    get x1() {
-        return this.x + this.width;
+    get x2() {
+        return this.x1 + this.width;
     }
 
     get y1() {
-        return this.y + this.height;
-    }
-
-    get y() {
         return this.get("y");
     }
 
-    set y(value: number) {
+    set y1(value: number) {
         this.set("y", String(value));
     }
 
+    get y2() {
+        return this.y1 + this.height;
+    }
+
     get midX() {
-        return this.x + this.width / 2;
+        return this.x1 + this.width / 2;
     }
 
     get midY() {
-        return this.y + this.height / 2;
+        return this.y1 + this.height / 2;
     }
 
     get width() {

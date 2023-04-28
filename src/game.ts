@@ -53,26 +53,26 @@ const gameOverScreen = new SVGScreen({ selector: "#game_over_screen" });
 function drawBall() {
     // Top frame collision
     if (ball.collidesWith(frame.top)) {
-        ball.y = frame.top.y + frame.top.height;
+        ball.y1 = frame.top.y1 + frame.top.height;
         ball.switchYDir();
     }
     // Right frame collision
     if (ball.collidesWith(frame.right)) {
-        ball.x = frame.right.x - ball.width;
+        ball.x1 = frame.right.x1 - ball.width;
         ball.switchXDir();
     }
     // Left frame collision
     if (ball.collidesWith(frame.left)) {
-        ball.x = frame.left.x + frame.left.width;
+        ball.x1 = frame.left.x1 + frame.left.width;
         ball.switchXDir();
     }
     // Bar collision
     if (ball.collidesWith(bar)) {
-        ball.y = bar.y - ball.height;
+        ball.y1 = bar.y1 - ball.height;
 
         // Calculate the point of impact on the bar
-        const ballMiddleX = ball.x + ball.width / 2;
-        const barMiddleX = bar.x + bar.width / 2;
+        const ballMiddleX = ball.x1 + ball.width / 2;
+        const barMiddleX = bar.x1 + bar.width / 2;
         const diff = ballMiddleX - barMiddleX;
 
         if (diff === 0) {
@@ -95,8 +95,8 @@ function drawBall() {
         }
     }
 
-    ball.x += ball.velocity.x;
-    ball.y += ball.velocity.y;
+    ball.x1 += ball.velocity.x;
+    ball.y1 += ball.velocity.y;
 
     // Bottom edge collision
     if (ball.collidesWith(deathPit)) {
@@ -138,17 +138,17 @@ const moveBar = (e: MouseEvent) => {
     const svgBoundingRect = game.node.parentElement.getBoundingClientRect();
     const clientX = e.clientX - bar.width / 2 - svgBoundingRect.left;
     const boundLeft = frame.left.width;
-    const boundRight = frame.right.x - bar.width;
+    const boundRight = frame.right.x1 - bar.width;
 
     if (clientX > boundLeft && clientX < boundRight) {
-        bar.x = clientX;
+        bar.x1 = clientX;
     }
     // If the mouse moves out of bounds while the event
     // is throttled - set the position to the end
     else if (e.clientX <= svgBoundingRect.left + frame.left.width) {
-        bar.x = boundLeft;
+        bar.x1 = boundLeft;
     } else if (e.clientX >= svgBoundingRect.left + svgBoundingRect.width - frame.right.width) {
-        bar.x = boundRight;
+        bar.x1 = boundRight;
     }
 };
 
@@ -162,9 +162,9 @@ const drawGame = () => {
 };
 
 function init() {
-    BALL_INITIAL_X = ball.x;
-    BALL_INITIAL_Y = ball.y;
-    BAR_INITIAL_X = bar.x;
+    BALL_INITIAL_X = ball.x1;
+    BALL_INITIAL_Y = ball.y1;
+    BAR_INITIAL_X = bar.x1;
 
     hideNode(ball);
     hideNode(bar);
@@ -210,11 +210,11 @@ function startNewGame() {
 }
 
 function cleanUpPreviousGame() {
-    ball.x = BALL_INITIAL_X;
-    ball.y = BALL_INITIAL_Y;
+    ball.x1 = BALL_INITIAL_X;
+    ball.y1 = BALL_INITIAL_Y;
     ball.initializeWithRandomAngle();
 
-    bar.x = BAR_INITIAL_X;
+    bar.x1 = BAR_INITIAL_X;
     livesLeft = 3;
 
     document.querySelectorAll(".block").forEach((block) => block.remove());
@@ -252,9 +252,9 @@ function deathPitCollisionHandler() {
 function respawn() {
     showNode(ball);
 
-    bar.x = BAR_INITIAL_X;
-    ball.x = BALL_INITIAL_X;
-    ball.y = BALL_INITIAL_Y;
+    bar.x1 = BAR_INITIAL_X;
+    ball.x1 = BALL_INITIAL_X;
+    ball.y1 = BALL_INITIAL_Y;
     ball.initializeWithRandomAngle();
 
     setTimeout(() => {
