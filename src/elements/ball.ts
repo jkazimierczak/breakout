@@ -1,6 +1,6 @@
 import { SVGNode, SVGNodeParams } from "./svgnode.ts";
 import { BALL_SPEED } from "@/constants.ts";
-import random from "lodash/random";
+import { random } from "lodash-es";
 
 export class SVGBall extends SVGNode {
     velocity = { x: 0, y: 0 };

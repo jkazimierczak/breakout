@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.7",
     "prettier": "^2.8.8",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
@@ -16,8 +17,7 @@
   },
   "dependencies": {
     "@fontsource/press-start-2p": "^4.5.11",
-    "@types/lodash": "^4.14.194",
     "gsap": "^3.11.5",
-    "lodash": "^4.17.21"
+    "lodash-es": "^4.17.21"
   }
 }

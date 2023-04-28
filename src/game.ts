@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { EasePack, RoughEase } from "gsap/EasePack";
 import { hideNode, showNode, SVGNode } from "@/elements/svgnode.ts";
-import throttle from "lodash/throttle";
+import { throttle } from "lodash-es";
 import "@fontsource/press-start-2p";
 import { cycleFill, flicker } from "@/animations.ts";
 import { SVGBall } from "@/elements/ball.ts";
