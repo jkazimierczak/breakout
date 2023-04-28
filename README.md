@@ -2,6 +2,8 @@
 
 An arcade game inspired by Atari Breakout.
 
+https://user-images.githubusercontent.com/77862767/235263834-1001c5ed-22e6-445f-bb4b-250ef33d71a1.mp4
+
 Available live: [https://jkazimierczak.github.io/breakout/](https://jkazimierczak.github.io/breakout/).
 
 ## The motivation
