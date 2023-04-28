@@ -10,6 +10,7 @@ import { SVGScreen } from "@/elements/screen.ts";
 import { createAllBlocks } from "@/elements/blocks.ts";
 import { BALL_SPEED } from "@/constants.ts";
 import "./style.css";
+import { SVGBar } from "@/elements/bar.ts";
 
 console.log("Game loaded");
 gsap.registerPlugin(EasePack);
@@ -30,7 +31,7 @@ const frame = {
     left: new SVGNode({ selector: "#frame_left" }),
     right: new SVGNode({ selector: "#frame_right" }),
 };
-const bar = new SVGNode({ selector: "#bar" });
+const bar = new SVGBar({ selector: "#bar" });
 const svg = new SVGNode({ selector: "svg" });
 const deathPit = new SVGNode({ selector: "#death_pit" });
 const blocks: [SVGNode?] = [];
@@ -159,21 +160,18 @@ const moveBarByKeyboard = (e: KeyboardEvent) => {
     const boundLeft = frame.left.width;
     const boundRight = frame.right.x1 - bar.width;
 
-    const STEP = 4;
     if (e.key === "ArrowLeft") {
-        // console.log("left");
-        bar.x1 -= STEP;
+        bar.setDirectionLeft();
     } else if (e.key === "ArrowRight") {
-        // console.log("right");
-        bar.x1 += STEP;
+        bar.setDirectionRight();
     }
 
-    if (bar.x1 > boundLeft && bar.x1 < boundRight) {
-        return;
-    } else if (bar.x1 <= boundLeft) {
-        bar.x1 = boundLeft;
-    } else if (bar.x1 >= boundRight) {
-        bar.x1 = boundRight;
+    if (bar.x1 + bar.velocity.x <= boundLeft) {
+        bar.moveTo(boundLeft);
+    } else if (bar.x1 + bar.velocity.x >= boundRight) {
+        bar.moveTo(boundRight);
+    } else {
+        bar.move();
     }
 };
 

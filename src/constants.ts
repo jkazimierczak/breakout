@@ -1,4 +1,5 @@
 export const BALL_SPEED = 6;
+export const BAR_SPEED = 23;
 
 // Block constants
 export const BLOCK_WIDTH = 70;
