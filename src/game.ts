@@ -17,6 +17,7 @@ gsap.registerPlugin(EasePack);
 
 // Game variables
 let livesLeft = 3;
+let successiveHits = 0;
 let BAR_INITIAL_X: number;
 let BALL_INITIAL_X: number;
 let BALL_INITIAL_Y: number;
@@ -70,6 +71,7 @@ function drawBall() {
     }
     // Bar collision
     if (ball.collidesWith(bar)) {
+        successiveHits = 0;
         ball.y1 = bar.y1 - ball.height;
 
         // Calculate the point of impact on the bar
@@ -117,6 +119,8 @@ function checkBallBlocksCollision() {
         if (!block) return;
 
         if (ball.collidesWith(block)) {
+            successiveHits++;
+
             const overlap = block.overlap(ball);
 
             if (overlap.top || overlap.bottom) {
@@ -139,7 +143,8 @@ function checkBallBlocksCollision() {
             blocks.splice(i, 1);
 
             topBar.blocksLeft.text = String(blocks.length);
-            topBar.points.text = String(Number(topBar.points.text) + 1);
+            const points = Number(topBar.points.text) + successiveHits * 10;
+            topBar.points.text = String(Math.round(points));
             if (blocks.length == 0) {
                 finishGame();
             }
