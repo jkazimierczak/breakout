@@ -92,9 +92,7 @@ export function finishGame() {
 export function respawn() {
     showNode(ball);
 
-    bar.x1 = game.BAR_INITIAL_X;
-    ball.x1 = game.BALL_INITIAL_X;
-    ball.y1 = game.BALL_INITIAL_Y;
+    game.resetPositions();
     ball.initializeWithRandomAngle();
 
     setTimeout(() => {
@@ -106,12 +104,8 @@ export function respawn() {
 }
 
 export function cleanUpPreviousGame() {
-    ball.x1 = game.BALL_INITIAL_X;
-    ball.y1 = game.BALL_INITIAL_Y;
+    game.resetState();
     ball.initializeWithRandomAngle();
-
-    bar.x1 = game.BAR_INITIAL_X;
-    game.livesLeft = 3;
 
     document.querySelectorAll(".block").forEach((block) => block.remove());
     blocks.splice(0, blocks.length);
