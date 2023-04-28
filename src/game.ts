@@ -131,7 +131,7 @@ function checkBallBlocksCollision() {
     }
 }
 
-const moveBar = (e: MouseEvent) => {
+const moveBarByMouse = (e: MouseEvent) => {
     if (!barMoveEnabled) return;
     if (!game.node.parentElement) return;
 
@@ -148,6 +148,31 @@ const moveBar = (e: MouseEvent) => {
     else if (e.clientX <= svgBoundingRect.left + frame.left.width) {
         bar.x1 = boundLeft;
     } else if (e.clientX >= svgBoundingRect.left + svgBoundingRect.width - frame.right.width) {
+        bar.x1 = boundRight;
+    }
+};
+
+const moveBarByKeyboard = (e: KeyboardEvent) => {
+    if (!barMoveEnabled) return;
+    if (!game.node.parentElement) return;
+
+    const boundLeft = frame.left.width;
+    const boundRight = frame.right.x1 - bar.width;
+
+    const STEP = 4;
+    if (e.key === "ArrowLeft") {
+        // console.log("left");
+        bar.x1 -= STEP;
+    } else if (e.key === "ArrowRight") {
+        // console.log("right");
+        bar.x1 += STEP;
+    }
+
+    if (bar.x1 > boundLeft && bar.x1 < boundRight) {
+        return;
+    } else if (bar.x1 <= boundLeft) {
+        bar.x1 = boundLeft;
+    } else if (bar.x1 >= boundRight) {
         bar.x1 = boundRight;
     }
 };
@@ -268,8 +293,8 @@ function respawn() {
 document.addEventListener("DOMContentLoaded", () => {
     init();
 
-    const moveBarThrottled = throttle(moveBar, 10);
-    document.addEventListener("mousemove", moveBarThrottled);
+    document.addEventListener("mousemove", throttle(moveBarByMouse, 10));
+    document.addEventListener("keydown", moveBarByKeyboard);
 
     startScreen.btn.addEventListener("click", () => {
         startNewGame();
