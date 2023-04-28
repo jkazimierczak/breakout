@@ -117,11 +117,15 @@ function checkBallBlocksCollision() {
         if (!block) return;
 
         if (ball.collidesWith(block)) {
-            ball.switchYDir();
-
             const overlap = block.overlap(ball);
-            if (overlap.left || overlap.right) {
+
+            if (overlap.top || overlap.bottom) {
+                ball.switchYDir();
+            } else if (overlap.left || overlap.right) {
                 ball.switchXDir();
+            } else {
+                ball.switchXDir();
+                ball.switchYDir();
             }
 
             block.set("opacity", "1");
