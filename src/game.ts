@@ -49,6 +49,7 @@ const topBar = {
 // Screens
 const startScreen = new SVGScreen({ selector: "#start_screen" });
 const gameOverScreen = new SVGScreen({ selector: "#game_over_screen" });
+const gameFinishedScreen = new SVGScreen({ selector: "#game_finished_screen" });
 
 // Game functions
 function drawBall() {
@@ -126,6 +127,9 @@ function checkBallBlocksCollision() {
 
             topBar.blocksLeft.text = String(blocks.length);
             topBar.points.text = String(Number(topBar.points.text) + 1);
+            if (blocks.length == 0) {
+                finishGame();
+            }
 
             return;
         }
@@ -192,13 +196,19 @@ function init() {
     hideNode(ball);
     hideNode(bar);
     hideNode(gameOverScreen);
+    hideNode(gameFinishedScreen);
     showNode(topBar.overlay);
 
     gsap.set(startScreen.btn, { attr: { "fill-opacity": 1 } });
     gsap.set(gameOverScreen.btn, { attr: { "fill-opacity": 1 } });
+    gsap.set(gameFinishedScreen.btn, { attr: { "fill-opacity": 1 } });
     // Start animations
     gsap.to(startScreen.btn, cycleFill);
     gsap.to(gameOverScreen.btn, {
+        ...cycleFill,
+        delay: 0.75,
+    });
+    gsap.to(gameFinishedScreen.btn, {
         ...cycleFill,
         delay: 0.75,
     });
@@ -222,6 +232,7 @@ function startNewGame() {
     showNode(bar);
     hideNode(startScreen);
     hideNode(gameOverScreen);
+    hideNode(gameFinishedScreen);
     hideNode(topBar.overlay);
 
     gsap.from(ball.node, flicker);
@@ -230,6 +241,20 @@ function startNewGame() {
         barMoveEnabled = true;
         paused = false;
     }, 500);
+}
+
+function finishGame() {
+    barMoveEnabled = false;
+    paused = true;
+    hideNode(ball);
+
+    showNode(gameFinishedScreen);
+    gameFinishedScreen.set("opacity", "0");
+    gsap.to(gameFinishedScreen.node, {
+        duration: 1,
+        attr: { opacity: 1 },
+        ease: "ease",
+    });
 }
 
 function cleanUpPreviousGame() {
@@ -299,6 +324,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     gameOverScreen.btn.addEventListener("click", () => {
+        cleanUpPreviousGame();
+        startNewGame();
+    });
+
+    gameFinishedScreen.btn.addEventListener("click", () => {
         cleanUpPreviousGame();
         startNewGame();
     });
