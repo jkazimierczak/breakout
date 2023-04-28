@@ -52,8 +52,7 @@ function drawBall() {
         gsap.fromTo(bar.node, { attr: { y: bar.y1 + 3 } }, { attr: { y: bar.y1 }, duration: 0.2 });
     }
 
-    ball.x1 += ball.velocity.x;
-    ball.y1 += ball.velocity.y;
+    ball.move();
 
     // Bottom edge collision
     if (ball.collidesWith(deathPit)) {

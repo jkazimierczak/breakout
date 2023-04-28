@@ -32,4 +32,9 @@ export class SVGBall extends SVGNode {
     switchYDir() {
         this.velocity.y = -this.velocity.y;
     }
+
+    move() {
+        this.x1 += this.velocity.x;
+        this.y1 += this.velocity.y;
+    }
 }
