@@ -24,7 +24,7 @@ let barMoveEnabled = false;
 
 // SVG elements
 const game = new SVGNode({ selector: "#game" });
-const ball = new SVGBall({ selector: "#ball" }, 90);
+const ball = new SVGBall({ selector: "#ball" });
 const frame = {
     top: new SVGNode({ selector: "#frame_top" }),
     left: new SVGNode({ selector: "#frame_left" }),
@@ -212,7 +212,7 @@ function startNewGame() {
 function cleanUpPreviousGame() {
     ball.x = BALL_INITIAL_X;
     ball.y = BALL_INITIAL_Y;
-    ball.restore();
+    ball.initializeWithRandomAngle();
 
     bar.x = BAR_INITIAL_X;
     livesLeft = 3;
@@ -255,7 +255,7 @@ function respawn() {
     bar.x = BAR_INITIAL_X;
     ball.x = BALL_INITIAL_X;
     ball.y = BALL_INITIAL_Y;
-    ball.restore();
+    ball.initializeWithRandomAngle();
 
     setTimeout(() => {
         paused = false;
