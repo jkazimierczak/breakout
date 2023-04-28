@@ -4,53 +4,26 @@ import { hideNode, showNode, SVGNode } from "@/elements/svgnode.ts";
 import { throttle } from "lodash-es";
 import "@fontsource/press-start-2p";
 import { cycleFill, flicker } from "@/animations.ts";
-import { SVGBall } from "@/elements/ball.ts";
-import { SVGText } from "@/elements/text.ts";
-import { SVGScreen } from "@/elements/screen.ts";
 import { createAllBlocks } from "@/elements/blocks.ts";
 import { BALL_SPEED } from "@/constants.ts";
 import "./style.css";
-import { SVGBar } from "@/elements/bar.ts";
+import { moveBarByKeyboard, moveBarByMouse } from "@/game/movement.ts";
+import {
+    ball,
+    frame,
+    bar,
+    svg,
+    deathPit,
+    blocks,
+    topBar,
+    startScreen,
+    gameOverScreen,
+    gameFinishedScreen,
+} from "@/game/elements.ts";
+import game from "@/game/state.ts";
 
-console.log("Game loaded");
 gsap.registerPlugin(EasePack);
-
-// Game variables
-let livesLeft = 3;
-let successiveHits = 0;
-let BAR_INITIAL_X: number;
-let BALL_INITIAL_X: number;
-let BALL_INITIAL_Y: number;
-let paused = true;
-let barMoveEnabled = false;
-
-// SVG elements
-const game = new SVGNode({ selector: "#game" });
-const ball = new SVGBall({ selector: "#ball" });
-const frame = {
-    top: new SVGNode({ selector: "#frame_top" }),
-    left: new SVGNode({ selector: "#frame_left" }),
-    right: new SVGNode({ selector: "#frame_right" }),
-};
-const bar = new SVGBar({ selector: "#bar" });
-const svg = new SVGNode({ selector: "svg" });
-const deathPit = new SVGNode({ selector: "#death_pit" });
-const blocks: [SVGNode?] = [];
-// Top bar elements
-const topBar = {
-    overlay: new SVGNode({ selector: "#topBarOverlay" }),
-    points: new SVGText({ selector: "#points" }),
-    blocksLeft: new SVGText({ selector: "#blocksLeft" }),
-    hearts: [
-        new SVGNode({ selector: "#heart_1" }),
-        new SVGNode({ selector: "#heart_2" }),
-        new SVGNode({ selector: "#heart_3" }),
-    ],
-};
-// Screens
-const startScreen = new SVGScreen({ selector: "#start_screen" });
-const gameOverScreen = new SVGScreen({ selector: "#game_over_screen" });
-const gameFinishedScreen = new SVGScreen({ selector: "#game_finished_screen" });
+console.log("Game loaded");
 
 // Game functions
 function drawBall() {
@@ -71,7 +44,7 @@ function drawBall() {
     }
     // Bar collision
     if (ball.collidesWith(bar)) {
-        successiveHits = 0;
+        game.successiveHits = 0;
         ball.y1 = bar.y1 - ball.height;
 
         // Calculate the point of impact on the bar
@@ -119,7 +92,7 @@ function checkBallBlocksCollision() {
         if (!block) return;
 
         if (ball.collidesWith(block)) {
-            successiveHits++;
+            game.successiveHits++;
 
             const overlap = block.overlap(ball);
 
@@ -143,7 +116,7 @@ function checkBallBlocksCollision() {
             blocks.splice(i, 1);
 
             topBar.blocksLeft.text = String(blocks.length);
-            const points = Number(topBar.points.text) + successiveHits * 10;
+            const points = Number(topBar.points.text) + game.successiveHits * 10;
             topBar.points.text = String(Math.round(points));
             if (blocks.length == 0) {
                 finishGame();
@@ -154,52 +127,9 @@ function checkBallBlocksCollision() {
     }
 }
 
-const moveBarByMouse = (e: MouseEvent) => {
-    if (!barMoveEnabled) return;
-    if (!game.node.parentElement) return;
-
-    const svgBoundingRect = game.node.parentElement.getBoundingClientRect();
-    const clientX = e.clientX - bar.width / 2 - svgBoundingRect.left;
-    const boundLeft = frame.left.width;
-    const boundRight = frame.right.x1 - bar.width;
-
-    if (clientX > boundLeft && clientX < boundRight) {
-        bar.x1 = clientX;
-    }
-    // If the mouse moves out of bounds while the event
-    // is throttled - set the position to the end
-    else if (e.clientX <= svgBoundingRect.left + frame.left.width) {
-        bar.x1 = boundLeft;
-    } else if (e.clientX >= svgBoundingRect.left + svgBoundingRect.width - frame.right.width) {
-        bar.x1 = boundRight;
-    }
-};
-
-const moveBarByKeyboard = (e: KeyboardEvent) => {
-    if (!barMoveEnabled) return;
-    if (!game.node.parentElement) return;
-
-    const boundLeft = frame.left.width;
-    const boundRight = frame.right.x1 - bar.width;
-
-    if (e.key === "ArrowLeft") {
-        bar.setDirectionLeft();
-    } else if (e.key === "ArrowRight") {
-        bar.setDirectionRight();
-    }
-
-    if (bar.x1 + bar.velocity.x <= boundLeft) {
-        bar.moveTo(boundLeft);
-    } else if (bar.x1 + bar.velocity.x >= boundRight) {
-        bar.moveTo(boundRight);
-    } else {
-        bar.move();
-    }
-};
-
 // Main breakout loop
 const drawGame = () => {
-    if (!paused) {
+    if (!game.paused) {
         drawBall();
     }
 
@@ -207,10 +137,6 @@ const drawGame = () => {
 };
 
 function init() {
-    BALL_INITIAL_X = ball.x1;
-    BALL_INITIAL_Y = ball.y1;
-    BAR_INITIAL_X = bar.x1;
-
     hideNode(ball);
     hideNode(bar);
     hideNode(gameOverScreen);
@@ -267,14 +193,14 @@ function startNewGame() {
     gsap.from(ball.node, flicker);
 
     setTimeout(() => {
-        barMoveEnabled = true;
-        paused = false;
+        game.barMoveEnabled = true;
+        game.paused = false;
     }, 500);
 }
 
 function finishGame() {
-    barMoveEnabled = false;
-    paused = true;
+    game.barMoveEnabled = false;
+    game.paused = true;
     hideNode(ball);
 
     showNode(gameFinishedScreen);
@@ -287,12 +213,12 @@ function finishGame() {
 }
 
 function cleanUpPreviousGame() {
-    ball.x1 = BALL_INITIAL_X;
-    ball.y1 = BALL_INITIAL_Y;
+    ball.x1 = game.BALL_INITIAL_X;
+    ball.y1 = game.BALL_INITIAL_Y;
     ball.initializeWithRandomAngle();
 
-    bar.x1 = BAR_INITIAL_X;
-    livesLeft = 3;
+    bar.x1 = game.BAR_INITIAL_X;
+    game.livesLeft = 3;
 
     document.querySelectorAll(".block").forEach((block) => block.remove());
     blocks.splice(0, blocks.length);
@@ -303,11 +229,11 @@ function cleanUpPreviousGame() {
 }
 
 function deathPitCollisionHandler() {
-    barMoveEnabled = false;
-    paused = true;
+    game.barMoveEnabled = false;
+    game.paused = true;
     hideNode(ball);
 
-    const heart = topBar.hearts[livesLeft - 1];
+    const heart = topBar.hearts[game.livesLeft - 1];
 
     gsap.to(heart.node, {
         duration: 0.5,
@@ -316,7 +242,7 @@ function deathPitCollisionHandler() {
     });
     gsap.set(heart.node, { attr: { "fill-opacity": 0 }, delay: 0.5 });
 
-    if (livesLeft - 1 === 0) {
+    if (game.livesLeft - 1 === 0) {
         svg.node.style.cursor = "auto";
 
         showNode(gameOverScreen);
@@ -330,21 +256,21 @@ function deathPitCollisionHandler() {
         return;
     }
 
-    livesLeft--;
+    game.livesLeft--;
     setTimeout(respawn, 1000);
 }
 
 function respawn() {
     showNode(ball);
 
-    bar.x1 = BAR_INITIAL_X;
-    ball.x1 = BALL_INITIAL_X;
-    ball.y1 = BALL_INITIAL_Y;
+    bar.x1 = game.BAR_INITIAL_X;
+    ball.x1 = game.BALL_INITIAL_X;
+    ball.y1 = game.BALL_INITIAL_Y;
     ball.initializeWithRandomAngle();
 
     setTimeout(() => {
-        paused = false;
-        barMoveEnabled = true;
+        game.paused = false;
+        game.barMoveEnabled = true;
     }, 500);
 
     gsap.from(ball.node, flicker);
