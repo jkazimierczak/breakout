@@ -7,7 +7,6 @@ body {
     background-color: #000000;
     display: grid;
     justify-items: center;
-    align-content: end;
 }
 
 svg {
