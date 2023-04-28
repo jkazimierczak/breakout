@@ -113,14 +113,18 @@ function checkBallBlocksCollision() {
         if (!block) return;
 
         if (ball.collidesWith(block)) {
+            ball.switchYDir();
+
+            const overlap = block.overlap(ball);
+            if (overlap.left || overlap.right) {
+                ball.switchXDir();
+            }
+
             block.node.remove();
             blocks.splice(i, 1);
 
             topBar.blocksLeft.text = String(blocks.length);
             topBar.points.text = String(Number(topBar.points.text) + 1);
-
-            ball.switchYDir();
-            ball.switchXDir();
 
             return;
         }
