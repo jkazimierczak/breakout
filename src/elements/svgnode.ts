@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-interface ISVGNodeParams {
+export interface SVGNodeParams {
     selector?: string;
     domNode?: HTMLElement;
 }
@@ -28,7 +28,7 @@ interface ISVGNodeParams {
 export class SVGNode {
     node: HTMLElement;
 
-    constructor(obj: ISVGNodeParams) {
+    constructor(obj: SVGNodeParams) {
         if (obj.selector) {
             const element = document.querySelector<HTMLElement>(obj.selector);
             if (!element) {
@@ -230,5 +230,3 @@ export function hideNode(node: SVGNode) {
 export function showNode(node: SVGNode) {
     node.set("display", "block");
 }
-
-export type SVGNodeParams = ConstructorParameters<typeof SVGNode>[0];
