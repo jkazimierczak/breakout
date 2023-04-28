@@ -1,6 +1,5 @@
 import gsap from "gsap";
-import { EasePack, RoughEase } from "gsap/EasePack";
-import { hideNode, showNode } from "@/elements/svgnode.ts";
+import { EasePack } from "gsap/EasePack";
 import { throttle } from "lodash-es";
 import "@fontsource/press-start-2p";
 import { BALL_SPEED } from "@/constants.ts";
@@ -9,17 +8,15 @@ import { moveBarByKeyboard, moveBarByMouse } from "@/game/movement.ts";
 import {
     ball,
     bar,
-    blocks,
     deathPit,
     frame,
     gameFinishedScreen,
     gameOverScreen,
     startScreen,
-    svg,
-    topBar,
 } from "@/game/elements.ts";
 import game from "@/game/state.ts";
-import { cleanUpPreviousGame, finishGame, init, respawn, startNewGame } from "@/game/lifecycle.ts";
+import { cleanUpPreviousGame, init, startNewGame } from "@/game/lifecycle.ts";
+import { checkBallBlocksCollision, deathPitCollisionHandler } from "@/game/collisions.ts";
 
 gsap.registerPlugin(EasePack);
 console.log("Game loaded");
@@ -84,48 +81,6 @@ function drawBall() {
     checkBallBlocksCollision();
 }
 
-function checkBallBlocksCollision() {
-    for (let i = 0; i < blocks.length; i++) {
-        const block = blocks[i];
-
-        if (!block) return;
-
-        if (ball.collidesWith(block)) {
-            game.successiveHits++;
-
-            const overlap = block.overlap(ball);
-
-            if (overlap.top || overlap.bottom) {
-                ball.switchYDir();
-            } else if (overlap.left || overlap.right) {
-                ball.switchXDir();
-            } else {
-                ball.switchXDir();
-                ball.switchYDir();
-            }
-
-            block.set("opacity", "1");
-            const durationMs = 100;
-            gsap.to(block.node, {
-                duration: durationMs / 1000,
-                attr: { opacity: 0 },
-                ease: "ease",
-            });
-            setTimeout(() => block.node.remove(), durationMs);
-            blocks.splice(i, 1);
-
-            topBar.blocksLeft.text = String(blocks.length);
-            const points = Number(topBar.points.text) + game.successiveHits * 10;
-            topBar.points.text = String(Math.round(points));
-            if (blocks.length == 0) {
-                finishGame();
-            }
-
-            return;
-        }
-    }
-}
-
 // Main breakout loop
 const drawGame = () => {
     if (!game.paused) {
@@ -134,38 +89,6 @@ const drawGame = () => {
 
     window.requestAnimationFrame(drawGame);
 };
-
-function deathPitCollisionHandler() {
-    game.barMoveEnabled = false;
-    game.paused = true;
-    hideNode(ball);
-
-    const heart = topBar.hearts[game.livesLeft - 1];
-
-    gsap.to(heart.node, {
-        duration: 0.5,
-        attr: { "fill-opacity": 0.5 },
-        ease: RoughEase.ease.config({ points: 10, strength: 3, clamp: true }),
-    });
-    gsap.set(heart.node, { attr: { "fill-opacity": 0 }, delay: 0.5 });
-
-    if (game.livesLeft - 1 === 0) {
-        svg.node.style.cursor = "auto";
-
-        showNode(gameOverScreen);
-        gameOverScreen.set("opacity", "0");
-        gsap.to(gameOverScreen.node, {
-            duration: 1,
-            attr: { opacity: 1 },
-            ease: "ease",
-        });
-
-        return;
-    }
-
-    game.livesLeft--;
-    setTimeout(respawn, 1000);
-}
 
 document.addEventListener("DOMContentLoaded", () => {
     init();
