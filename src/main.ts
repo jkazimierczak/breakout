@@ -1,26 +1,25 @@
 import gsap from "gsap";
 import { EasePack, RoughEase } from "gsap/EasePack";
-import { hideNode, showNode, SVGNode } from "@/elements/svgnode.ts";
+import { hideNode, showNode } from "@/elements/svgnode.ts";
 import { throttle } from "lodash-es";
 import "@fontsource/press-start-2p";
-import { cycleFill, flicker } from "@/animations.ts";
-import { createAllBlocks } from "@/elements/blocks.ts";
 import { BALL_SPEED } from "@/constants.ts";
 import "./style.css";
 import { moveBarByKeyboard, moveBarByMouse } from "@/game/movement.ts";
 import {
     ball,
-    frame,
     bar,
-    svg,
-    deathPit,
     blocks,
-    topBar,
-    startScreen,
-    gameOverScreen,
+    deathPit,
+    frame,
     gameFinishedScreen,
+    gameOverScreen,
+    startScreen,
+    svg,
+    topBar,
 } from "@/game/elements.ts";
 import game from "@/game/state.ts";
+import { cleanUpPreviousGame, finishGame, init, respawn, startNewGame } from "@/game/lifecycle.ts";
 
 gsap.registerPlugin(EasePack);
 console.log("Game loaded");
@@ -136,98 +135,6 @@ const drawGame = () => {
     window.requestAnimationFrame(drawGame);
 };
 
-function init() {
-    hideNode(ball);
-    hideNode(bar);
-    hideNode(gameOverScreen);
-    hideNode(gameFinishedScreen);
-    showNode(topBar.overlay);
-
-    gsap.set(startScreen.btn, { attr: { "fill-opacity": 1 } });
-    gsap.set(gameOverScreen.btn, { attr: { "fill-opacity": 1 } });
-    gsap.set(gameFinishedScreen.btn, { attr: { "fill-opacity": 1 } });
-    // Start animations
-    gsap.to(startScreen.btn, cycleFill);
-    gsap.to(gameOverScreen.btn, {
-        ...cycleFill,
-        delay: 0.75,
-    });
-    gsap.to(gameFinishedScreen.btn, {
-        ...cycleFill,
-        delay: 0.75,
-    });
-}
-
-function startNewGame() {
-    createAllBlocks();
-    // Add all blocks to breakout elements
-    document.querySelectorAll<HTMLElement>(".block").forEach((block, idx) => {
-        blocks.push(new SVGNode({ domNode: block }));
-
-        gsap.fromTo(
-            block,
-            {
-                opacity: 0,
-            },
-            {
-                opacity: 1,
-                delay: idx / 100,
-            }
-        );
-    });
-
-    showNode(startScreen);
-
-    svg.node.style.cursor = "none";
-
-    topBar.points.text = String(0);
-    topBar.blocksLeft.text = String(blocks.length);
-
-    showNode(ball);
-    showNode(bar);
-    hideNode(startScreen);
-    hideNode(gameOverScreen);
-    hideNode(gameFinishedScreen);
-    hideNode(topBar.overlay);
-
-    gsap.from(ball.node, flicker);
-
-    setTimeout(() => {
-        game.barMoveEnabled = true;
-        game.paused = false;
-    }, 500);
-}
-
-function finishGame() {
-    game.barMoveEnabled = false;
-    game.paused = true;
-    hideNode(ball);
-
-    showNode(gameFinishedScreen);
-    gameFinishedScreen.set("opacity", "0");
-    gsap.to(gameFinishedScreen.node, {
-        duration: 1,
-        attr: { opacity: 1 },
-        ease: "ease",
-    });
-}
-
-function cleanUpPreviousGame() {
-    ball.x1 = game.BALL_INITIAL_X;
-    ball.y1 = game.BALL_INITIAL_Y;
-    ball.initializeWithRandomAngle();
-
-    bar.x1 = game.BAR_INITIAL_X;
-    game.livesLeft = 3;
-
-    document.querySelectorAll(".block").forEach((block) => block.remove());
-    blocks.splice(0, blocks.length);
-
-    showNode(ball);
-
-    topBar.hearts.forEach((h) => gsap.set(h.node, { attr: { "fill-opacity": 1 } }));
-}
-
 function deathPitCollisionHandler() {
     game.barMoveEnabled = false;
     game.paused = true;
@@ -258,22 +165,6 @@ function deathPitCollisionHandler() {
 
     game.livesLeft--;
     setTimeout(respawn, 1000);
-}
-
-function respawn() {
-    showNode(ball);
-
-    bar.x1 = game.BAR_INITIAL_X;
-    ball.x1 = game.BALL_INITIAL_X;
-    ball.y1 = game.BALL_INITIAL_Y;
-    ball.initializeWithRandomAngle();
-
-    setTimeout(() => {
-        game.paused = false;
-        game.barMoveEnabled = true;
-    }, 500);
-
-    gsap.from(ball.node, flicker);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
