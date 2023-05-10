@@ -21,6 +21,7 @@ export const moveBarByMouse = (e: MouseEvent) => {
         bar.x1 = boundRight;
     }
 };
+
 export const moveBarByKeyboard = (e: KeyboardEvent) => {
     if (!state.barMoveEnabled) return;
     if (!game.node.parentElement) return;

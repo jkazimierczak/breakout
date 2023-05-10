@@ -7,7 +7,7 @@ import { checkBallBlocksCollision, deathPitCollisionHandler } from "@/game/colli
 function drawBall() {
     // Top frame collision
     if (ball.collidesWith(frame.top)) {
-        ball.y1 = frame.top.y1 + frame.top.height;
+        ball.y1 = frame.top.y2;
         ball.switchYDir();
     }
     // Right frame collision
@@ -17,7 +17,7 @@ function drawBall() {
     }
     // Left frame collision
     if (ball.collidesWith(frame.left)) {
-        ball.x1 = frame.left.x1 + frame.left.width;
+        ball.x1 = frame.left.x2;
         ball.switchXDir();
     }
     // Bar collision
@@ -49,6 +49,7 @@ function drawBall() {
             }
         }
 
+        // Bar "dip"
         gsap.fromTo(bar.node, { attr: { y: bar.y1 + 3 } }, { attr: { y: bar.y1 }, duration: 0.2 });
     }
 
