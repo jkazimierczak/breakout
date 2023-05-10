@@ -76,5 +76,6 @@ export function deathPitCollisionHandler() {
     }
 
     game.livesLeft--;
+    game.successiveHits = 0;
     setTimeout(respawn, 1000);
 }
